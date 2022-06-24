@@ -12,14 +12,14 @@ Mainly taken from https://docs.docker.com/samples/wordpress/
 - Docker
 
 ## How to run
-1. Modify `compose.yml` wordpress service to start with standard `wordpress` image once.
-    - Go to `localhost:8080` and setup wordpress.
-2. Change wordpress image back to custom `hannesolszewski/wordpress-modsecurity` image, this will be build from `Dockerfile` 
-3. Build docker image `docker build -t hannesolszewski/wordpress-modsecurit .` from `Dockerfile`
-    - Will setup ModSecurity2
-    - Will setup Fail2Ban and filter for 403's
+1. Modify `compose.yml` wordpress service to start with standard `wordpress` image once
+    - `docker compose up`, go to `localhost:8080` and setup wordpress
+2. Change wordpress image back to custom `hannesolszewski/wordpress-modsecurity` image 
+3. Build docker image `docker build -t hannesolszewski/wordpress-modsecurit .` It will be build from `Dockerfile` and
+    - sets up ModSecurity2
+    - sets up Fail2Ban and filter for 403's
 4. Use `docker compose up`
-5. Wordpress is available under `localhost:8000`
+5. Wordpress is now available under `localhost:8080`
 6. Doing any XSS will trigger ip-ban after 3 retries, scripts below.
 
 ## Shutdown / cleanup
@@ -28,7 +28,7 @@ Mainly taken from https://docs.docker.com/samples/wordpress/
 
 ## Additional
 - `docker exec -it wordpress-modsecurity-fail2ban-wordpress-1 bash` to connect to container via ssh
-- `http://localhost:8800/?page_id=<script>alert(document.cookie)</script>` - not encded
+- `http://localhost:8080/?page_id=<script>alert(document.cookie)</script>` - not encded
 - `http://localhost:8080/?page_id=%3cscript%3ealert(document.cookie)%3c/script%3e` - encoded
 
 ## Configurations
@@ -43,7 +43,7 @@ We are setting a custom jail handling, active SSH-Filter, as well as a custom fi
 - `route.conf` - our actions, here we define what commands are run when `actionban` and `actionunban` are caused
 - Ip banning, when 3x 403 was caused
 - output banned ip-address `sudo zgrep 'Ban' /var/log/fail2ban.log*`
-- output count banned ip-addresses `fail2ban-client status apache_403`
+- output fail2ban status `fail2ban-client status apache_403`
 
 ### ModSecurity2
 
