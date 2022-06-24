@@ -1,0 +1,10 @@
+[apache_403]
+enabled = true
+port    = http,https
+filter  = apache_403
+logpath = /var/log/apache2/*access.log
+maxretry = 3
+action = route
+
+[sshd]
+enabled = false

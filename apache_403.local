@@ -1,0 +1,2 @@
+[Definition]
+failregex = <HOST> - - \[.*\] "GET \/.* HTTP\/1\.[01]" 403 [0-9]+.*$
